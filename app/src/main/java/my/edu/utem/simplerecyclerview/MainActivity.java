@@ -1,5 +1,7 @@
 package my.edu.utem.simplerecyclerview;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView=findViewById(R.id.recyclerView);
-        CustomAdapter adapter=new CustomAdapter();
+        CustomAdapter adapter=new CustomAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
@@ -39,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     //custom_row akan declare kat sini
     public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder>{
 
+            public final String[] restaurantNames;
+            public CustomAdapter(Context context){
+            Resources resources = context.getResources();
+            restaurantNames=resources.getStringArray(R.array.restaurant_name);
+    }
         @NonNull
         @Override
         //nak buka table
@@ -50,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         //nak tunjuk apa dalam row
         @Override
         public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
-            customViewHolder.wordTextView.setText("This is row "+i);
+            customViewHolder.wordTextView.setText(restaurantNames[i]);
         }
         // berapa kali nak repeat
         @Override
         public int getItemCount() {
-            return 10;
+            return restaurantNames.length;
         }
     }
 }
